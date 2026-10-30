@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Simulasi Petualangan Nakku</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&amp;family=Nunito:wght@400;600;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#1E6F6D}a:hover{color:#134B4A}
+button{cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; padding: 28px 36px; background: #EEF4F7; font-family: 'Nunito', sans-serif; color: #1F2A44; display: flex; flex-direction: column; gap: 16px">
+
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+    <div>
+      <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #3D4A63">Simulasi prototype · klik untuk mencoba</p>
+      <h1 style="margin: 2px 0 0; font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 38px; line-height: 1">Petualangan Nakku: permainan yang hanya bisa dimenangkan berdua</h1>
+    </div>
+    <div style="background: #1F2A44; color: #FFFFFF; border-radius: 14px; padding: 10px 16px; max-width: 420px">
+      <p style="margin: 0; font-size: 14px; font-weight: 600">{{toast}}</p>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 18px; flex-grow: 1; min-height: 0">
+
+    <div style="width: 430px; background: #FFFFFF; border-radius: 22px; padding: 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #3D4A63">Sisi anak · {{placeLabel}}</p>
+        <div style="display: flex; gap: 6px; align-items: center"><span style="font-size: 12px; font-weight: 800; color: #3D4A63">Baterai</span><div style="width: 60px; height: 10px; border-radius: 5px; background: #E1E7EE"><div style="{{batteryStyle}}"></div></div></div>
+      </div>
+
+      <sc-if value="{{notDocked}}" hint-placeholder-val="{{ true }}">
+        <div style="height: 270px; background: #EEF4F7; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px">
+          <div style="width: 210px; height: 210px; border-radius: 105px 105px 80px 80px; background: #1E8C8A; display: flex; flex-direction: column; align-items: center; padding-top: 44px; box-sizing: border-box; gap: 22px; box-shadow: 0 12px 0 rgba(31,42,68,0.14)">
+            <div style="display: flex; gap: 44px; align-items: center; height: 56px">
+              <div style="{{eyeStyle}}"><sc-if value="{{showPupil}}" hint-placeholder-val="{{ true }}"><div style="width: 22px; height: 22px; background: #1F2A44; border-radius: 50%"></div></sc-if></div>
+              <div style="{{eyeStyle}}"><sc-if value="{{showPupil}}" hint-placeholder-val="{{ true }}"><div style="width: 22px; height: 22px; background: #1F2A44; border-radius: 50%"></div></sc-if></div>
+            </div>
+            <button type="button" aria-label="Tombol bicara Nakku" onClick="{{press}}" style="{{talkStyle}}">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1F2A44" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
+            </button>
+          </div>
+          <p style="margin: 0; font-size: 14px; font-weight: 800">Nakku: {{moodLabel}} · {{accessoryNow}}</p>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{docked}}" hint-placeholder-val="{{ false }}">
+        <div style="height: 270px; background: #1F2A44; border-radius: 18px; border: 6px solid #F4C542; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 8px; color: #FFFFFF">
+          <p style="margin: 0; font-size: 13px; font-weight: 800">Video call · Rumah Nakku · Tebak gambar Ayah</p>
+          <div style="display: flex; gap: 12px; align-items: center; flex-grow: 1">
+            <div style="width: 120px; height: 120px; border-radius: 14px; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+              <sc-if value="{{drawKapal}}" hint-placeholder-val="{{ true }}">
+                <svg width="96" height="96" viewBox="0 0 100 100" role="img" aria-label="Gambar Ayah ronde ini"><path d="M15 62h70l-10 18H25z" fill="none" stroke="#1F2A44" stroke-width="4"></path><path d="M50 15v47" stroke="#1F2A44" stroke-width="4"></path><path d="M54 20l22 32H54z" fill="none" stroke="#E8833A" stroke-width="4"></path></svg>
+              </sc-if>
+              <sc-if value="{{drawIkan}}" hint-placeholder-val="{{ false }}">
+                <svg width="96" height="96" viewBox="0 0 100 100" role="img" aria-label="Gambar Ayah ronde ini"><ellipse cx="45" cy="50" rx="28" ry="16" fill="none" stroke="#1F2A44" stroke-width="4"></ellipse><path d="M73 50l18-14v28z" fill="none" stroke="#1F2A44" stroke-width="4"></path><circle cx="32" cy="46" r="3" fill="#1F2A44"></circle></svg>
+              </sc-if>
+              <sc-if value="{{drawMatahari}}" hint-placeholder-val="{{ false }}">
+                <svg width="96" height="96" viewBox="0 0 100 100" role="img" aria-label="Gambar Ayah ronde ini"><circle cx="50" cy="50" r="18" fill="none" stroke="#E8833A" stroke-width="4"></circle><path d="M50 12v14M50 74v14M12 50h14M74 50h14M23 23l10 10M67 67l10 10M77 23L67 33M33 67L23 77" stroke="#E8833A" stroke-width="4" stroke-linecap="round"></path></svg>
+              </sc-if>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1">
+              <sc-for list="{{options}}" as="o" hint-placeholder-count="3">
+                <button type="button" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+            <p style="margin: 0; font-size: 13px">{{resultText}}</p>
+            <button type="button" onClick="{{nextRound}}" style="height: 36px; padding: 0 14px; border-radius: 18px; border: none; background: #F4C542; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px">Ronde berikutnya</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button type="button" onClick="{{ketemuReq}}" style="height: 48px; border-radius: 14px; border: 2px solid #1F2A44; background: #FFFFFF; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px">Tekan 2x: Ketemu Ayah!</button>
+        <button type="button" onClick="{{toggleDock}}" style="height: 48px; border-radius: 14px; border: none; background: #1F2A44; color: #FFFFFF; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px">{{dockLabel}}</button>
+      </div>
+      <sc-if value="{{showListen}}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{listen}}" style="height: 48px; border-radius: 14px; border: none; background: #F4C542; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px">Mata menyala! Dengarkan pesan Ayah</button>
+      </sc-if>
+      <sc-if value="{{showMission}}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{completeMission}}" style="height: 48px; border-radius: 14px; border: 3px solid #1E8C8A; background: #FFFFFF; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px">Misi: foto benda biru · Selesaikan</button>
+      </sc-if>
+    </div>
+
+    <div style="flex-grow: 1; background: #FFFFFF; border-radius: 22px; padding: 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #3D4A63">Peta petualangan bersama · Hari {{day}}</p>
+        <p style="margin: 0; font-size: 14px; font-weight: 800">{{hearts}} hati terkumpul</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{islands}}" as="isl" hint-placeholder-count="6">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+            <div style="{{isl.style}}">{{isl.num}}</div>
+            <p style="margin: 0; font-size: 12px; font-weight: 800; text-align: center">{{isl.name}}</p>
+            <p style="margin: 0; font-size: 11px; color: #3D4A63; text-align: center">{{isl.acc}}</p>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="background: #FDEFC4; border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; gap: 12px">
+        <p style="margin: 0; font-size: 13px; font-weight: 800; white-space: nowrap">Menuju pulau berikutnya</p>
+        <div style="display: flex; gap: 4px">
+          <sc-for list="{{heartRow}}" as="h" hint-placeholder-count="5">
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z" fill="{{h.fill}}" stroke="#B4432F" stroke-width="1.8"></path></svg>
+          </sc-for>
+        </div>
+        <p style="margin: 0; font-size: 12px; color: #1F2A44">Sapa dua arah +1 · Misi +2 · Tebak benar +1 · Ketemu +3</p>
+      </div>
+
+      <div style="display: flex; gap: 12px; min-height: 0; flex-grow: 1">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0">
+          <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #3D4A63">Kotak Kenangan</p>
+          <sc-for list="{{memories}}" as="m" hint-placeholder-count="3">
+            <div style="background: #EEF4F7; border-radius: 12px; padding: 8px 12px">
+              <p style="margin: 0; font-size: 12px; font-weight: 800; color: #1E6F6D">{{m.t}}</p>
+              <p style="margin: 0; font-size: 13px">{{m.x}}</p>
+            </div>
+          </sc-for>
+        </div>
+        <div style="width: 180px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0">
+          <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #3D4A63">Stempel</p>
+          <sc-for list="{{stamps}}" as="s" hint-placeholder-count="1">
+            <div style="border: 3px dashed #E8833A; border-radius: 12px; padding: 6px 10px; font-size: 13px; font-weight: 800; text-align: center">{{s}}</div>
+          </sc-for>
+          <sc-if value="{{noStamps}}" hint-placeholder-val="{{ true }}">
+            <p style="margin: 0; font-size: 13px; color: #3D4A63">Belum ada. Selesaikan misi atau ketemu Ayah.</p>
+          </sc-if>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 13px; font-weight: 600; color: #3D4A63">Aturan main: hati hanya bertambah dari interaksi dua arah. Nakku tidak bisa dimainkan sendirian, dan tidak pernah "mati" kalau lama sepi.</p>
+    </div>
+
+    <div style="width: 370px; display: flex; flex-direction: column; gap: 12px; flex-shrink: 0">
+      <div style="flex-grow: 1; background: #1F2A44; border-radius: 34px; padding: 10px; box-sizing: border-box; display: flex; min-height: 0">
+        <div style="flex-grow: 1; background: #FFFFFF; border-radius: 26px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-height: 0">
+          <p style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #3D4A63">HP Ayah</p>
+          <div style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1; min-height: 0; overflow: hidden">
+            <sc-for list="{{ayahInbox}}" as="a" hint-placeholder-count="2">
+              <div style="background: #EEF4F7; border-radius: 12px; padding: 8px 12px">
+                <p style="margin: 0; font-size: 12px; font-weight: 800; color: #1E6F6D">{{a.who}}</p>
+                <p style="margin: 0; font-size: 13px">{{a.text}}</p>
+              </div>
+            </sc-for>
+            <sc-if value="{{inboxEmpty}}" hint-placeholder-val="{{ true }}">
+              <p style="margin: 0; font-size: 13px; color: #3D4A63">Belum ada pesan. Coba tekan tombol kuning di Nakku.</p>
+            </sc-if>
+          </div>
+          <button type="button" onClick="{{ayahReply}}" style="height: 46px; border-radius: 23px; border: none; background: #E8833A; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px">Balas dengan suara</button>
+          <button type="button" onClick="{{sendMission}}" style="height: 46px; border-radius: 23px; border: 2px solid #1F2A44; background: #FFFFFF; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px">Kirim misi: foto benda biru</button>
+          <sc-if value="{{showConfirm}}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{confirmKetemu}}" style="height: 46px; border-radius: 23px; border: none; background: #1E8C8A; color: #FFFFFF; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px">Pilih slot Sabtu 10.00</button>
+          </sc-if>
+          <sc-if value="{{showMet}}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{markMet}}" style="height: 46px; border-radius: 23px; border: none; background: #1E8C8A; color: #FFFFFF; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px">Sabtu tiba: tandai sudah bertemu</button>
+          </sc-if>
+        </div>
+      </div>
+      <div style="background: #EDE9FB; border-radius: 16px; padding: 10px 14px">
+        <p style="margin: 0; font-size: 12px; font-weight: 800; color: #4A3DA8">Ibu ikut melihat · {{ibuCount}} aktivitas</p>
+        <p style="margin: 2px 0 0; font-size: 13px">{{ibuLast}}</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button type="button" onClick="{{skipDays}}" style="height: 40px; border-radius: 12px; border: 2px dashed #8A97AD; background: transparent; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px">Lewati 3 hari sepi</button>
+        <button type="button" onClick="{{reset}}" style="height: 40px; border-radius: 12px; border: 2px dashed #8A97AD; background: transparent; color: #1F2A44; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px">Ulang simulasi</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+var ISLANDS = [
+  { name: 'Teluk Sapa', acc: 'Awal petualangan' },
+  { name: 'Pulau Misi', acc: 'Topi pelaut' },
+  { name: 'Bukit Cerita', acc: 'Syal hangat' },
+  { name: 'Pantai Tawa', acc: 'Kacamata pantai' },
+  { name: 'Gunung Berani', acc: 'Jubah petualang' },
+  { name: 'Rumah Pohon', acc: 'Mahkota daun' }
+];
+var ROUNDS = [
+  { draw: 'kapal', options: ['Kapal', 'Ikan', 'Matahari'], answer: 0 },
+  { draw: 'ikan', options: ['Burung', 'Ikan', 'Mobil'], answer: 1 },
+  { draw: 'matahari', options: ['Bola', 'Bunga', 'Matahari'], answer: 2 }
+];
+function fresh() {
+  return {
+    hearts: 0, mood: 'senang', recording: false, childUnread: false, childSent: false,
+    mission: null, docked: false, round: 0, picked: -1, ketemu: 0, stamps: [],
+    memories: [{ t: 'Hari 1', x: 'Nakku pertama kali dipasang di botol minum.' }],
+    ayahInbox: [], ibuLog: [], battery: 70, day: 1,
+    toast: 'Mulai dari sini: klik tombol kuning di Nakku untuk bicara ke Ayah.'
+  };
+}
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = fresh();
+  }
+  mem(list, text) {
+    return [{ t: 'Hari ' + this.state.day, x: text }].concat(list).slice(0, 4);
+  }
+  inbox(who, text) {
+    return [{ who: who, text: text }].concat(this.state.ayahInbox).slice(0, 4);
+  }
+  ibu(text) {
+    return this.state.ibuLog.concat([text]);
+  }
+  drain(n) {
+    var b = Math.max(5, this.state.battery - n);
+    return { battery: b, mood: (b <= 25 && !this.state.docked) ? 'ngantuk' : this.state.mood === 'ngantuk' ? 'senang' : this.state.mood };
+  }
+  renderVals() {
+    var s = this.state;
+    var self = this;
+    var island = Math.min(5, Math.floor(s.hearts / 5));
+    var inIsland = island === 5 ? 5 : s.hearts % 5;
+    var round = ROUNDS[s.round];
+    var glow = s.childUnread ? '0 0 0 9px rgba(244,197,66,0.85)' : 'none';
+    var eyeH = s.mood === 'kangen' ? 30 : s.mood === 'ngantuk' ? 8 : 56;
+    var moodLabel = s.mood === 'kangen' ? 'kangen Ayah' : s.mood === 'ngantuk' ? 'ngantuk, baterai lemah' : 'senang';
+    var acc = island === 0 ? 'belum ada aksesori' : 'memakai ' + ISLANDS[island].acc.toLowerCase();
+
+    return {
+      toast: s.toast,
+      day: s.day,
+      hearts: s.hearts,
+      placeLabel: s.docked ? 'terpasang di Rumah Nakku' : 'menempel di botol minum',
+      batteryStyle: 'height: 10px; border-radius: 5px; width: ' + s.battery + '%; background: ' + (s.battery <= 25 ? '#B4432F' : '#5A9E4B'),
+      notDocked: !s.docked,
+      docked: s.docked,
+      eyeStyle: 'width: 56px; height: ' + eyeH + 'px; background: #FFFFFF; border-radius: ' + (s.mood === 'senang' ? '50%' : '28px') + '; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: ' + glow,
+      showPupil: s.mood !== 'ngantuk',
+      talkStyle: 'width: 92px; height: 92px; border-radius: 50%; border: 7px solid ' + (s.recording ? '#B4432F' : '#FFFFFF') + '; background: #F4C542; display: flex; align-items: center; justify-content: center',
+      moodLabel: moodLabel,
+      accessoryNow: acc,
+      dockLabel: s.docked ? 'Lepas dari Rumah Nakku' : 'Pasang ke Rumah Nakku',
+      showListen: s.childUnread && !s.docked,
+      showMission: s.mission === 'aktif',
+      drawKapal: round.draw === 'kapal',
+      drawIkan: round.draw === 'ikan',
+      drawMatahari: round.draw === 'matahari',
+      options: round.options.map(function (label, i) {
+        var bg = '#FFFFFF';
+        if (s.picked >= 0 && i === round.answer) bg = '#BFE5C0';
+        else if (s.picked === i) bg = '#F6C9BF';
+        return {
+          label: label,
+          style: 'height: 40px; border-radius: 12px; border: none; background: ' + bg + '; color: #1F2A44; font-family: Nunito, sans-serif; font-weight: 800; font-size: 15px',
+          pick: function () { self.pick(i); }
+        };
+      }),
+      resultText: s.picked < 0 ? 'Pilih jawabanmu.' : (s.picked === round.answer ? 'Benar! +1 hati. Ayah tertawa senang.' : 'Belum tepat, tapi kalian tertawa bareng.'),
+      islands: ISLANDS.map(function (it, i) {
+        var reached = i <= island;
+        var current = i === island;
+        return {
+          num: String(i + 1),
+          name: it.name,
+          acc: it.acc,
+          style: 'width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; ' +
+            (current ? 'background: #1E8C8A; color: #FFFFFF; box-shadow: 0 0 0 5px #F4C542;' : reached ? 'background: #9FD8D6; color: #1F2A44;' : 'background: #E1E7EE; color: #3D4A63;')
+        };
+      }),
+      heartRow: [0, 1, 2, 3, 4].map(function (i) { return { fill: i < inIsland ? '#E8833A' : '#FFFFFF' }; }),
+      memories: s.memories,
+      stamps: s.stamps,
+      noStamps: s.stamps.length === 0,
+      ayahInbox: s.ayahInbox,
+      inboxEmpty: s.ayahInbox.length === 0,
+      showConfirm: s.ketemu === 1,
+      showMet: s.ketemu === 2,
+      ibuCount: s.ibuLog.length,
+      ibuLast: s.ibuLog.length ? s.ibuLog[s.ibuLog.length - 1] : 'Belum ada aktivitas.',
+
+      press: function () {
+        if (s.docked) return;
+        if (!s.recording) {
+          self.setState({ recording: true, toast: 'Merekam... Klik tombol lagi untuk melepas dan mengirim.' });
+          return;
+        }
+        var d = self.drain(8);
+        self.setState({
+          recording: false, childSent: true, battery: d.battery, mood: d.mood === 'kangen' ? 'kangen' : d.mood,
+          ayahInbox: self.inbox('Pesan suara dari [Nama Anak]', '"Ayah, aku dapat bintang di kelas!"'),
+          ibuLog: self.ibu('Anak mengirim pesan suara ke Ayah'),
+          memories: self.mem(s.memories, 'Anak bercerita dapat bintang. Ayah orang pertama yang tahu.'),
+          toast: 'Terkirim ke HP Ayah. Sekarang coba "Balas dengan suara" di HP Ayah.'
+        });
+      },
+      listen: function () {
+        self.setState({ childUnread: false, toast: 'Suara Ayah keluar dari Nakku: "Hebat, Nak! Ayah bangga."' });
+      },
+      ayahReply: function () {
+        var gain = s.childSent ? 1 : 0;
+        self.setState({
+          childUnread: true, childSent: false, hearts: Math.min(30, s.hearts + gain), mood: s.mood === 'kangen' ? 'senang' : s.mood,
+          ibuLog: self.ibu('Ayah membalas pesan'),
+          toast: gain ? 'Sapaan dua arah! +1 hati. Mata Nakku menyala di sisi anak.' : 'Pesan Ayah terkirim. Mata Nakku menyala di sisi anak.'
+        });
+      },
+      sendMission: function () {
+        self.setState({ mission: 'aktif', childUnread: true, ibuLog: self.ibu('Ayah mengirim misi'), toast: 'Misi dikirim. Anak bisa menyelesaikannya di sisi kiri.' });
+      },
+      completeMission: function () {
+        var d = self.drain(6);
+        self.setState({
+          mission: null, hearts: Math.min(30, s.hearts + 2), battery: d.battery, mood: d.mood,
+          stamps: s.stamps.concat(['Misi Biru']),
+          ayahInbox: self.inbox('Foto misi dari [Nama Anak]', 'Mobil mainan biru kesayangannya.'),
+          memories: self.mem(s.memories, 'Misi biru: anak memotret mobil mainan kesayangannya untuk Ayah.'),
+          ibuLog: self.ibu('Anak menyelesaikan misi'),
+          toast: 'Misi selesai! +2 hati dan stempel baru.'
+        });
+      },
+      ketemuReq: function () {
+        if (s.ketemu > 0) return;
+        self.setState({
+          ketemu: 1,
+          ayahInbox: self.inbox('Permintaan ketemu', '[Nama Anak] menekan "Ketemu Ayah!". Pilih slot yang disepakati.'),
+          ibuLog: self.ibu('Anak minta ketemu Ayah. Menunggu pilihan slot.'),
+          toast: 'Permintaan terkirim ke Ayah dan Ibu sekaligus.'
+        });
+      },
+      confirmKetemu: function () {
+        self.setState({ ketemu: 2, ibuLog: self.ibu('Ayah memilih Sabtu 10.00 sesuai jadwal disepakati'), childUnread: true, toast: 'Slot Sabtu dikonfirmasi. Ibu menerima notifikasinya.' });
+      },
+      markMet: function () {
+        self.setState({
+          ketemu: 0, hearts: Math.min(30, s.hearts + 3), day: s.day + 1,
+          stamps: s.stamps.concat(['Hari Ketemu']),
+          memories: [{ t: 'Hari ' + (s.day + 1), x: 'Ketemu langsung! Main di taman dan makan es krim bareng.' }].concat(s.memories).slice(0, 4),
+          toast: 'Hari Ketemu! +3 hati. Momen ini tersimpan di Kotak Kenangan.'
+        });
+      },
+      toggleDock: function () {
+        if (s.docked) {
+          self.setState({ docked: false, toast: 'Nakku dilepas. Siap ikut ke sekolah lagi besok.' });
+        } else {
+          self.setState({
+            docked: true, battery: 100, mood: s.mood === 'ngantuk' ? 'senang' : s.mood, recording: false, picked: -1,
+            ibuLog: self.ibu('Video call Ayah-anak di jam buka'),
+            toast: 'Nakku "pulang" dan mengisi daya. Video call dimulai: tebak gambar Ayah!'
+          });
+        }
+      },
+      pick: function () {},
+      nextRound: function () {
+        self.setState({ round: (s.round + 1) % ROUNDS.length, picked: -1, toast: 'Ayah menggambar lagi...' });
+      },
+      skipDays: function () {
+        self.setState({
+          day: s.day + 3, mood: 'kangen',
+          ayahInbox: [{ who: 'Nakku', text: 'Nakku kangen. Kirim sapaan kecil untuk [Nama Anak]?' }].concat(s.ayahInbox).slice(0, 4),
+          toast: 'Tiga hari sepi: Nakku terlihat kangen, tidak mati. Ayah mendapat pengingat lembut.'
+        });
+      },
+      reset: function () { self.setState(fresh()); }
+    };
+  }
+  pick(i) {
+    var s = this.state;
+    if (s.picked >= 0) return;
+    var round = ROUNDS[s.round];
+    var ok = i === round.answer;
+    this.setState({
+      picked: i,
+      hearts: Math.min(30, s.hearts + (ok ? 1 : 0)),
+      memories: this.mem(s.memories, ok ? 'Tebak gambar: anak langsung tahu gambar ' + round.options[round.answer].toLowerCase() + ' Ayah.' : 'Tebak gambar: gambar Ayah dikira ' + round.options[i].toLowerCase() + '. Tertawa bareng.'),
+      toast: ok ? 'Benar! +1 hati.' : 'Belum tepat, tapi tetap seru.'
+    });
+  }
+}
+</script>
+</body>
+</html>
